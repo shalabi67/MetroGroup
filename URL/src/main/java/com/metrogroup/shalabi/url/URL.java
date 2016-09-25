@@ -7,35 +7,49 @@ package com.metrogroup.shalabi.url;
  * URL string can looks like this:
  * [protocol://][domain[/[path]]]
  * where any thing between [] is optional.
+ *
+ * Notice that:
+ * Protocol Domain and Path can have any character combinations. if this is not valid, then rules can be later on
+ * enforced using regular expressions.
  */
 public class URL {
     private static final String protocolToken = "://";
     private static final String pathToken = "/";
 
     public static URL create(String urlPath) {
+        if(urlPath == null) {
+            throw new InvalidUrlException("URL can not be null.");
+        }
         String protocol = "";
         String domain = "";
         String path ="";
         String newPath = urlPath;
 
         //get protocol
-        int index = urlPath.indexOf(protocolToken );
+        int index = urlPath.indexOf(protocolToken);
         if(index>= 0)  {
             protocol = newPath.substring(0, index);
             newPath = newPath .substring(index + protocolToken.length());
         }
 
         //get domain
-        index = newPath.indexOf(pathToken );
+        index = newPath.indexOf(pathToken);
         if(index>= 0)  {
             domain = newPath.substring(0, index);
             path = newPath .substring(index + pathToken.length());
+        }
+        else {
+            domain = newPath;
         }
 
         return new URL(protocol, domain, path);
     }
 
     public URL(String protocol, String domain, String path) {
+        if(domain.isEmpty() && !path.isEmpty()) {
+            throw new InvalidUrlException("Expecting domain.");
+        }
+
         this.protocol = protocol;
         this.path = path;
         this.domain = domain;

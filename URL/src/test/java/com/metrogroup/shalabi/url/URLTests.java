@@ -9,9 +9,22 @@ import org.junit.Test;
 public class URLTests {
     @Test
     public void completePathTests() {
-        for(int i=0; i<completePath.length; i++) {
-            URL url = URL.create(completePath[i]);
-            Assert.assertTrue(completePath[i], url.equals(completePathExpectedResult[i]));
+        String[] urls = completePath;
+        URL[] expectedURls = completePathExpectedResult;
+        runTest(urls, expectedURls);
+    }
+
+    @Test
+    public void missingPathPartTests() {
+        String[] urls = missingPathPart;
+        URL[] expectedURls = missingPathPartExpectedResult;
+        runTest(urls, expectedURls);
+    }
+
+    private void runTest(String[] urls, URL[] expectedURls) {
+        for(int i=0; i<urls.length; i++) {
+            URL url = URL.create(urls[i]);
+            Assert.assertTrue(urls[i], url.equals(expectedURls[i]));
         }
     }
 
@@ -27,5 +40,26 @@ public class URLTests {
             //new URL("", "", ""),
     };
 
+    private String[] missingPathPart = {
+            "domain",
+            "",
+            "http://",
+            "http://domain",
+            "domain/path",
+
+    };
+    private URL[] missingPathPartExpectedResult = {
+            new URL("", "domain", ""),
+            new URL("", "", ""),
+            new URL("http", "", ""),
+            new URL("http", "domain", ""),
+            new URL("", "domain", "path")
+    };
+
+    private String[] invalidURl = {
+        "/path",
+        "",
+        null
+    };
 
 }
