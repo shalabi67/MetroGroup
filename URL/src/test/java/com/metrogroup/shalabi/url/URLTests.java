@@ -21,23 +21,47 @@ public class URLTests {
         runTest(urls, expectedURls);
     }
 
+    @Test
+    public void invalidURlTests() {
+        String[] urls = invalidURl;
+        runInvalidTest(urls);
+    }
+
     private void runTest(String[] urls, URL[] expectedURls) {
         for(int i=0; i<urls.length; i++) {
             URL url = URL.create(urls[i]);
             Assert.assertTrue(urls[i], url.equals(expectedURls[i]));
         }
     }
+    private void runInvalidTest(String[] urls) {
+        for(int i=0; i<urls.length; i++) {
+            try {
+                URL url = URL.create(urls[i]);
+                Assert.fail(urls[i]);
+            }
+            catch(InvalidUrlException e) {
+
+            }
+        }
+    }
 
     private String[] completePath = {
             "http://domain/path",
             "ftp://domain.path/path",
-            "ftp://domain.path://path"
+            "ftp://domain.path://path",
+            "http://domain/path/path2",
+            "x://y://",
+            "x:/y",
+            "x:y"
     };
     private URL[] completePathExpectedResult = {
         new URL("http", "domain", "path"),
             new URL("ftp", "domain.path", "path"),
-            new URL("ftp", "domain.path:", "/path")
-            //new URL("", "", ""),
+            new URL("ftp", "domain.path:", "/path"),
+            new URL("http", "domain", "path/path2"),
+            new URL("x", "y:", "/"),
+            new URL("", "x:", "y"),
+            new URL("", "x:y", "")
     };
 
     private String[] missingPathPart = {
@@ -46,6 +70,7 @@ public class URLTests {
             "http://",
             "http://domain",
             "domain/path",
+            "domain/path/path2"
 
     };
     private URL[] missingPathPartExpectedResult = {
@@ -53,13 +78,14 @@ public class URLTests {
             new URL("", "", ""),
             new URL("http", "", ""),
             new URL("http", "domain", ""),
-            new URL("", "domain", "path")
+            new URL("", "domain", "path"),
+            new URL("", "domain", "path/path2")
     };
 
     private String[] invalidURl = {
         "/path",
-        "",
         null
     };
+
 
 }
