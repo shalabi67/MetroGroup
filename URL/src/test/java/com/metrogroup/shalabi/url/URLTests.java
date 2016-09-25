@@ -51,8 +51,7 @@ public class URLTests {
             "ftp://domain.path://path",
             "http://domain/path/path2",
             "x://y://",
-            "x:/y",
-            "x:y"
+            "/http://domain/path"
     };
     private URL[] completePathExpectedResult = {
         new URL("http", "domain", "path"),
@@ -60,8 +59,7 @@ public class URLTests {
             new URL("ftp", "domain.path:", "/path"),
             new URL("http", "domain", "path/path2"),
             new URL("x", "y:", "/"),
-            new URL("", "x:", "y"),
-            new URL("", "x:y", "")
+            new URL("/http", "domain", "path"),
     };
 
     private String[] missingPathPart = {
@@ -70,7 +68,9 @@ public class URLTests {
             "http://",
             "http://domain",
             "domain/path",
-            "domain/path/path2"
+            "domain/path/path2",
+            "x:/y",
+            "x:y"
 
     };
     private URL[] missingPathPartExpectedResult = {
@@ -79,7 +79,9 @@ public class URLTests {
             new URL("http", "", ""),
             new URL("http", "domain", ""),
             new URL("", "domain", "path"),
-            new URL("", "domain", "path/path2")
+            new URL("", "domain", "path/path2"),
+            new URL("", "x:", "y"),
+            new URL("", "x:y", "")
     };
 
     private String[] invalidURl = {

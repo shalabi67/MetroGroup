@@ -3,7 +3,7 @@ package com.metrogroup.shalabi.url;
 /**
  * URL consists of three parts(protocol, domain, and path) separated by two tokens(://, and /).
  * Protocol and domain are separated by the first occurrence of :// token, while domain and path are separated by
- * the first occurrence of /.
+ * the first occurrence of / which come after :// token.
  * URL string can looks like this:
  * [protocol://][domain[/[path]]]
  * where any thing between [] is optional.
@@ -50,9 +50,19 @@ public class URL {
             throw new InvalidUrlException("Expecting domain.");
         }
 
-        this.protocol = protocol;
-        this.path = path;
-        this.domain = domain;
+        this.setProtocol(protocol);
+        this.setPath(path);
+        this.setDomain(domain);
+    }
+
+    protected void validateProtocol(){
+
+    }
+    protected void validateDomain() {
+
+    }
+    protected void validatePath() {
+
     }
 
 
@@ -87,6 +97,7 @@ public class URL {
 
     public void setProtocol(String protocol) {
         this.protocol = protocol;
+        validateProtocol();
     }
 
     public String getDomain() {
@@ -95,6 +106,7 @@ public class URL {
 
     public void setDomain(String domain) {
         this.domain = domain;
+        validateDomain();
     }
 
     public String getPath() {
@@ -103,5 +115,6 @@ public class URL {
 
     public void setPath(String path) {
         this.path = path;
+        validatePath();
     }
 }
