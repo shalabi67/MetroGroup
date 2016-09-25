@@ -65,6 +65,14 @@ public class URL {
 
     }
 
+    @Override
+    public String toString() {
+        return "URL{" +
+                "protocol='" + protocol + '\'' +
+                ", domain='" + domain + '\'' +
+                ", path='" + path + '\'' +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
